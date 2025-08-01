@@ -1,0 +1,33 @@
+{
+  "name": "distrack-discord-bot-management",
+  "version": "0.0.1",
+  "description": "Discord bot that manages the DisTrack community",
+  "main": "bot.js",
+  "dependencies": {
+    "@jimp/gif": "^0.22.12",
+    "axios": "^1.9.0",
+    "body-parser": "^1.20.3",
+    "canvas": "^3.1.0",
+    "discord.js": "^14.19.3",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "gif-encoder": "^0.7.2",
+    "gif-frames": "^0.2.4",
+    "gifencoder": "^2.0.1",
+    "jimp": "^1.6.0",
+    "mongodb": "^6.16.0",
+    "mongoose": "^8.15.1"
+  },
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "node start.js",
+    "deploy": "node deploy-commands.js --global",
+    "deploy-guild": "node deploy-commands.js --guild",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord-bot"
+  ],
+  "author": "Jay",
+  "license": "CC0-1.0"
+}
