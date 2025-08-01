@@ -1,0 +1,26 @@
+#
+# On push to prod, SSH into your Linode, pull, reinstall, restart.
+#
+name: Deploy to Production
+
+on:
+    push:
+        branches: [prod]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: SSH Deploy
+              uses: appleboy/ssh-action@v0.1.9
+              with:
+                  host: ${{ secrets.LINODE_HOST }} # Your Linode's IP address
+                  username: ${{ secrets.LINODE_USER }} # Your Linode's SSH username
+                  key: ${{ secrets.LINODE_SSH_KEY }} # Your Linode's SSH private key
+                  script: |
+                      cd ~/code/DisTrack-Discord-Bot-Management
+                      git checkout prod
+                      git fetch --all
+                      git reset --hard origin/prod
+                      npm ci
+                      pm2 restart 10
