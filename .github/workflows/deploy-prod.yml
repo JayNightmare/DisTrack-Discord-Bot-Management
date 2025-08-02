@@ -23,4 +23,4 @@ jobs:
                       git fetch --all
                       git reset --hard origin/prod
                       npm ci
-                      pm2 restart 10
+                      pm2 restart "DisTrack Bot - Manager"
