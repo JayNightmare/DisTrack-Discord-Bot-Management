@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const Utils = require("../../utils/Utils");
+const Logger = require("../../utils/Logger");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -85,6 +86,18 @@ module.exports = {
 
             // Kick the user
             await targetMember.kick(reason);
+
+            // Log the action to audit log
+            await Logger.logAction({
+                guildId: interaction.guild.id,
+                action: "kick",
+                moderatorId: interaction.user.id,
+                targetId: targetUser.id,
+                reason,
+                details: {
+                    targetTag: targetUser.tag,
+                },
+            });
 
             // Create success embed
             const successEmbed = Utils.createSuccessEmbed(

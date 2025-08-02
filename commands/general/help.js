@@ -127,6 +127,11 @@ module.exports = {
                             name: "/unban",
                             value: "Unban a user from the server\n**Usage:** `/unban user_id:<user_id> reason:<optional>`",
                             inline: false,
+                        },
+                        {
+                            name: "/autorole",
+                            value: "Configure automatic role assignment for new members\n**Usage:** `/autorole set role:<@role>` `/autorole enable/disable` `/autorole status`",
+                            inline: false,
                         }
                     )
                     .setTimestamp();

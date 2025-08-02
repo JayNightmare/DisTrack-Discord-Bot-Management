@@ -56,6 +56,20 @@ const guildConfigSchema = new mongoose.Schema(
                 default: "Welcome {user} to {guild}!",
             },
         },
+        autoRoleConfig: {
+            enabled: {
+                type: Boolean,
+                default: false,
+            },
+            roleId: {
+                type: String,
+                default: null,
+            },
+            botRoleId: {
+                type: String,
+                default: null,
+            },
+        },
     },
     {
         timestamps: true,

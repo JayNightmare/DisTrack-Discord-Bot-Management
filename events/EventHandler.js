@@ -26,6 +26,9 @@ class EventHandler {
         this.client.on(Events.GuildCreate, this.onGuildJoin.bind(this));
         this.client.on(Events.GuildDelete, this.onGuildLeave.bind(this));
 
+        // Member events
+        this.client.on(Events.GuildMemberAdd, this.onGuildMemberAdd.bind(this));
+
         // Error handling
         this.client.on(Events.Error, this.onError.bind(this));
         this.client.on(Events.Warn, this.onWarn.bind(this));
@@ -205,6 +208,76 @@ class EventHandler {
 
     onGuildLeave(guild) {
         Utils.log(`Left guild: ${guild.name} (${guild.id})`, "INFO");
+    }
+
+    async onGuildMemberAdd(member) {
+        try {
+            Utils.log(
+                `${Utils.formatUser(member.user)} joined ${member.guild.name}`
+            );
+
+            // Import GuildConfig here to avoid circular dependencies
+            const GuildConfig = require("../models/GuildConfig");
+
+            // Get guild configuration
+            const guildConfig = await GuildConfig.findOne({
+                guildId: member.guild.id,
+            });
+
+            if (
+                !guildConfig ||
+                !guildConfig.autoRoleConfig.enabled ||
+                !guildConfig.autoRoleConfig.roleId
+            ) {
+                return; // Auto-role not configured or disabled
+            }
+
+            // Determine which role to assign based on whether the member is a bot
+            let roleId;
+            if (member.user.bot && guildConfig.autoRoleConfig.botRoleId) {
+                roleId = guildConfig.autoRoleConfig.botRoleId;
+            } else if (!member.user.bot) {
+                roleId = guildConfig.autoRoleConfig.roleId;
+            } else {
+                return; // Bot joined but no bot role configured
+            }
+
+            // Get the role
+            const role = member.guild.roles.cache.get(roleId);
+            if (!role) {
+                Utils.log(
+                    `Auto-role ${roleId} not found in ${member.guild.name}`,
+                    "WARN"
+                );
+                return;
+            }
+
+            // Check if bot can assign the role
+            if (
+                role.position >= member.guild.members.me.roles.highest.position
+            ) {
+                Utils.log(
+                    `Cannot assign auto-role ${role.name} - insufficient permissions in ${member.guild.name}`,
+                    "WARN"
+                );
+                return;
+            }
+
+            // Assign the role
+            await member.roles.add(role, "Auto-role assignment");
+
+            Utils.log(
+                `Assigned auto-role ${role.name} to ${Utils.formatUser(
+                    member.user
+                )} in ${member.guild.name}`
+            );
+        } catch (error) {
+            Utils.log(
+                `Error in auto-role assignment: ${error.message}`,
+                "ERROR"
+            );
+            console.error(error);
+        }
     }
 
     onError(error) {

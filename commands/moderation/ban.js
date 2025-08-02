@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const Utils = require("../../utils/Utils");
+const Logger = require("../../utils/Logger");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -124,6 +125,19 @@ module.exports = {
             await interaction.guild.members.ban(targetUser.id, {
                 reason: reason,
                 deleteMessageDays: deleteDays,
+            });
+
+            // Log the action to audit log
+            await Logger.logAction({
+                guildId: interaction.guild.id,
+                action: "ban",
+                moderatorId: interaction.user.id,
+                targetId: targetUser.id,
+                reason,
+                details: {
+                    deleteDays,
+                    targetTag: targetUser.tag,
+                },
             });
 
             // Create success embed

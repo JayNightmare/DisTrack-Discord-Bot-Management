@@ -86,8 +86,6 @@ class DisTrackBot {
             Utils.log("Connecting to MongoDB...", "INFO");
 
             await mongoose.connect(config.mongoUri, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
                 maxPoolSize: 10,
                 serverSelectionTimeoutMS: 5000,
                 socketTimeoutMS: 45000,

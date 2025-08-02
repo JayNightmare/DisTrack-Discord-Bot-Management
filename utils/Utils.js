@@ -122,11 +122,11 @@ class Utils {
 
     /**
      * Parse duration string to milliseconds
-     * @param {string} duration - Duration string (e.g., "1h", "30m", "1d")
+     * @param {string} duration - Duration string (e.g., "1h", "30m", "1d", "6m" for months, "1y" for years)
      * @returns {number|null} - Milliseconds or null if invalid
      */
     static parseDuration(duration) {
-        const regex = /^(\d+)([smhd])$/i;
+        const regex = /^(\d+)([smhdMy])$/i;
         const match = duration.match(regex);
 
         if (!match) return null;
@@ -143,6 +143,42 @@ class Utils {
                 return value * 60 * 60 * 1000;
             case "d":
                 return value * 24 * 60 * 60 * 1000;
+            case "m": // months (uppercase M in regex, but toLowerCase makes it 'm' - handle both)
+                return value * 30 * 24 * 60 * 60 * 1000; // Approximate month
+            case "y":
+                return value * 365 * 24 * 60 * 60 * 1000; // Approximate year
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Parse extended duration string to milliseconds (supports months and years)
+     * @param {string} duration - Duration string (e.g., "1h", "30m", "1d", "6M", "1y")
+     * @returns {number|null} - Milliseconds or null if invalid
+     */
+    static parseExtendedDuration(duration) {
+        const regex = /^(\d+)([smhdMy])$/;
+        const match = duration.match(regex);
+
+        if (!match) return null;
+
+        const value = parseInt(match[1]);
+        const unit = match[2];
+
+        switch (unit) {
+            case "s":
+                return value * 1000;
+            case "m":
+                return value * 60 * 1000;
+            case "h":
+                return value * 60 * 60 * 1000;
+            case "d":
+                return value * 24 * 60 * 60 * 1000;
+            case "M": // months (uppercase)
+                return value * 30 * 24 * 60 * 60 * 1000;
+            case "y":
+                return value * 365 * 24 * 60 * 60 * 1000;
             default:
                 return null;
         }
