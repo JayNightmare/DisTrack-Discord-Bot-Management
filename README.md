@@ -4,7 +4,7 @@
 # DisTrack Discord Bot - Server Management
 
 A comprehensive Discord server management bot with admin-only moderation commands and a complete ticketing system.
-</div>
+
 
 
 | Name | Description | Version | Links
@@ -15,6 +15,8 @@ A comprehensive Discord server management bot with admin-only moderation command
 | Website | Website for DisTrack | ![Latest Release](https://img.shields.io/github/v/release/JayNightmare/DisTrack-Website?label=Latest%20Release) | [GitHub](https://github.com/JayNightmare/DisTrack-Website), [Website](https://distrack.endpoint-system.uk/) |
 | Backend Endpoints | API Endpoints for business logic | ![Latest Release](https://img.shields.io/github/v/release/JayNightmare/DisTrack-Backend-Endpoint-Server?label=Latest%20Release) | [GitHub](https://github.com/JayNightmare/DisTrack-Backend-Endpoint-Server)
 | Frontend Endpoints | Bot Crawler Rich Embed logic | ![Latest Release](https://img.shields.io/github/v/release/JayNightmare/DisTrack-Frontend-Endpoint-Server?label=Latest%20Release) | [GitHub](https://github.com/JayNightmare/DisTrack-Frontend-Endpoint-Server)
+
+</div>
 
 ## 🚀 Features
 
